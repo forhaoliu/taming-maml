@@ -1,0 +1,59 @@
+name: tmaml
+channels:
+- kne
+- pytorch
+- anaconda
+dependencies:
+- python=3.7
+- cython
+- lockfile
+- matplotlib
+- seaborn
+- glob2
+- mkl
+- numpy
+- mako
+- scipy
+- pyqt
+# PyTorch installation
+# uncomment the following lines depending on your OS
+# Linux-CPU
+# - pytorch-cpu=1.0.1
+# - torchvision-cpu
+# Linux-GPU
+# - pytorch=1.0.1
+# - torchvision
+# - cudatoolkit=9.0
+# Mac
+# - pytorch=1.0.1
+# - torchvision
+# Tensoflow installation
+# uncomment the following lines depending on gpu/cpu
+# # CPU-only
+- tensorflow==1.13.1
+# GPU
+# - tensorflow-gpu==1.13.1
+- pip:
+  - ipdb
+  - tensorboardX
+  - mujoco-py==1.50.1.56
+  - glfw
+  - gym[mujoco, robotics]==0.10.5
+  - mpi4py==3.0.0
+  - scikit-learn
+  - setuptools
+  - panda
+  - click
+  - pylint
+  - cloudpickle
+  - pathos
+  - tqdm
+  - joblib
+  - progressbar2
+  - pyyaml
+  - autopep8
+  - PyPrind
+  - Pillow
+  - moviepy
+  - git+https://github.com/dennisl88/rand_param_envs.git
+  - git+https://github.com/dennisl88/multiworld.git@russell
