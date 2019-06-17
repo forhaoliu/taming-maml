@@ -71,6 +71,10 @@ def shift_advantages_to_positive(advantages):
     return (advantages - np.min(advantages)) + 1e-8
 
 
+def normalize_metabaselines(metabaselines):
+    return (metabaselines - np.mean(metabaselines)) / (metabaselines.std() + 1e-8)
+
+
 def discount_cumsum(x, discount):
     """
     See https://docs.scipy.org/doc/scipy/reference/tutorial/signal.html#difference-equation-filtering

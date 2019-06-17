@@ -92,31 +92,10 @@ class MetaPointEnvCorner(MetaEnv):
     def get_task(self):
         return self.goal
 
-# if __name__ == "__main__":
-#     env = MetaPointEnvCorner()
-#     task = env.sample_tasks(10)
-#     print(task[0])
-#     while True:
-#         env.set_task(task[0])
-#         env.reset()
-#         done = False
-#         i = 0
-#         t_r = 0
-#         while not done:
-#             obs, reward, done, _ = env.step(env.action_space.sample())  # take a random action
-#             t_r += reward
-#             i += 1
-#             if reward > 0:
-#                 print(obs)
-#                 break
-#             if i > 200:
-#                 print(obs)
-#                 break
-#         print(i, t_r)
-
 if __name__ == "__main__":
     env = MetaPointEnvCorner()
     task = env.sample_tasks(10)
+    print(task[0])
     while True:
         env.set_task(task[0])
         env.reset()
@@ -125,10 +104,12 @@ if __name__ == "__main__":
         t_r = 0
         while not done:
             obs, reward, done, _ = env.step(env.action_space.sample())  # take a random action
-            env.render()
             t_r += reward
             i += 1
             if reward > 0:
+                print(obs)
                 break
             if i > 200:
+                print(obs)
                 break
+        print(i, t_r)

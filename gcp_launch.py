@@ -66,9 +66,6 @@ assert sum([ismaml, istmaml, isdice]
 savedir = args.savedir
 
 for idx, env in enumerate(envs):
-
-    # wait for a while since kuberenetes might try to provision standard96 VM for each requested pod thinking that there is no space available
-
     for seed in seeds:
         if ismaml:
             file_name = 'vpg_run_mujoco'
@@ -97,10 +94,8 @@ for idx, env in enumerate(envs):
         # pod_name += timestamp
         pod_name = pod_name.lower().replace("_", "-")
 
-        # command = ['/usr/bin/zsh', '-c',
-        #            'source ~/.zshrc && cd /export/home/taming-maml-tf/ && cp /export/home/mjkey /root/.mujoco/mjkey.txt && conda activate mlkit36 && pip install -r requirements.txt && pip install -e . && python {}.py --env {} --seed {} --dump_path {} --n_iter {}'.format(file_name, env, seed, exp_dir, n_iter)]
         command = ['/usr/bin/zsh', '-c',
-                   'source ~/.zshrc && cd /export/home/taming-maml-tf/ && cp /export/home/mjkey /root/.mujoco/mjkey.txt && conda activate mlkit37 && pip install -r requirements.txt && pip install -e . && python {}.py --env {} --seed {} --dump_path {} --n_iter {}'.format(file_name, env, seed, exp_dir, n_iter)]
+                   'source ~/.zshrc && cd /export/home/taming-maml-tf/ && conda activate mlkit37 && pip install -r requirements.txt && pip install -e . && python {}.py --env {} --seed {} --dump_path {} --n_iter {}'.format(file_name, env, seed, exp_dir, n_iter)]
 
         print(command)
 

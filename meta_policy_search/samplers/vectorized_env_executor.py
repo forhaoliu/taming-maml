@@ -137,7 +137,12 @@ class MetaParallelEnvExecutor(object):
         for remote, action_list in zip(self.remotes, actions_per_meta_task):
             remote.send(('step', action_list))
 
-        results = [remote.recv() for remote in self.remotes]
+        try:
+            results = [remote.recv() for remote in self.remotes]
+        except EOFError:
+            print("NaN caught during rollout generation. Trying again...")
+            self.reset()
+            self.step(actions)
 
         obs, rewards, dones, env_infos = map(lambda x: sum(x, []), zip(*results))
 

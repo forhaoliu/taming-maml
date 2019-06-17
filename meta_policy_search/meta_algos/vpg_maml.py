@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 class VPGMAML(MAMLAlgo):
     """
-    Algorithm for MAML + VPG
+    Algorithm for PPO MAML
 
     Args:
         policy (Policy): policy object

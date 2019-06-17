@@ -1,32 +1,9 @@
 from meta_policy_search.samplers.base import SampleProcessor
+from meta_policy_search.samplers.dice_sample_processor import DiceSampleProcessor
 from meta_policy_search.utils import utils
 import numpy as np
 
-
 class MetaSampleProcessor(SampleProcessor):
-
-    def __init__(
-            self,
-            baseline,
-            max_path_length,
-            discount=0.99,
-            gae_lambda=1,
-            normalize_adv=True,
-            positive_adv=False,
-            return_baseline=None
-    ):
-
-        assert 0 <= discount <= 1.0, 'discount factor must be in [0,1]'
-        assert max_path_length > 0
-        assert hasattr(baseline, 'fit') and hasattr(baseline, 'predict')
-
-        self.max_path_length = max_path_length
-        self.baseline = baseline
-        self.discount = discount
-        self.gae_lambda = gae_lambda
-        self.normalize_adv = normalize_adv
-        self.positive_adv = positive_adv
-        self.return_baseline = return_baseline
 
     def process_samples(self, paths_meta_batch, log=False, log_prefix=''):
         """
@@ -51,7 +28,7 @@ class MetaSampleProcessor(SampleProcessor):
         samples_data_meta_batch = []
         all_paths = []
 
-        for _, paths in paths_meta_batch.items():
+        for meta_task, paths in paths_meta_batch.items():
 
             # fits baseline, compute advantages and stack path data
             samples_data, paths = self._compute_samples_data(paths)
@@ -60,16 +37,16 @@ class MetaSampleProcessor(SampleProcessor):
             all_paths.extend(paths)
 
         # 7) compute normalized trajectory-batch rewards (for E-MAML)
-        overall_avg_reward = np.mean(np.concatenate(
-            [samples_data['rewards'] for samples_data in samples_data_meta_batch]))
-        overall_avg_reward_std = np.std(np.concatenate(
-            [samples_data['rewards'] for samples_data in samples_data_meta_batch]))
+        overall_avg_reward = np.mean(np.concatenate([samples_data['rewards'] for samples_data in samples_data_meta_batch]))
+        overall_avg_reward_std = np.std(np.concatenate([samples_data['rewards'] for samples_data in samples_data_meta_batch]))
 
         for samples_data in samples_data_meta_batch:
-            samples_data['adj_avg_rewards'] = (
-                samples_data['rewards'] - overall_avg_reward) / (overall_avg_reward_std + 1e-8)
+            samples_data['adj_avg_rewards'] = (samples_data['rewards'] - overall_avg_reward) / (overall_avg_reward_std + 1e-8)
 
         # 8) log statistics if desired
         self._log_path_stats(all_paths, log=log, log_prefix=log_prefix)
 
         return samples_data_meta_batch
+
+class DiceMetaSampleProcessor(DiceSampleProcessor):
+    process_samples = MetaSampleProcessor.process_samples

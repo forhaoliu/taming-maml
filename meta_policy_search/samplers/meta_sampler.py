@@ -64,7 +64,7 @@ class MetaSampler(Sampler):
             log (boolean): whether to log sampling times
             log_prefix (str) : prefix for logger
 
-        Returns:
+        Returns: 
             (dict) : A dict of paths of size [meta_batch_size] x (batch_size) x [5] x (max_path_length)
         """
 
@@ -83,9 +83,9 @@ class MetaSampler(Sampler):
 
         # initial reset of envs
         obses = self.vec_env.reset()
-
+        
         while n_samples < self.total_samples:
-
+            
             # execute policy
             t = time.time()
             obs_per_task = np.split(np.asarray(obses), self.meta_batch_size)

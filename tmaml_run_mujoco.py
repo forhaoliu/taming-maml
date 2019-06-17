@@ -110,7 +110,7 @@ if __name__ == "__main__":
         'env': 'HalfCheetahRandDirecEnv',
 
         # sampler config
-        'rollouts_per_meta_task': 40,
+        'rollouts_per_meta_task': 20,
         'max_path_length': 100,
         'parallel': True,
 

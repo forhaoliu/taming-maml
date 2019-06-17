@@ -4,7 +4,7 @@ from meta_policy_search.policies.base import Policy
 from collections import OrderedDict
 import tensorflow as tf
 import numpy as np
-import copy
+
 
 class MetaAlgo(object):
     """
@@ -89,7 +89,7 @@ class MetaAlgo(object):
 class MAMLAlgo(MetaAlgo):
     """
     Provides some implementations shared between all MAML algorithms
-
+    
     Args:
         policy (Policy): policy object
         inner_lr (float) : gradient step size used for inner step
@@ -118,7 +118,7 @@ class MAMLAlgo(MetaAlgo):
             prefix (str) : a string to prepend to the name of each variable
 
         Returns:
-            (tuple) : a tuple containing lists of placeholders for each input type and meta task,
+            (tuple) : a tuple containing lists of placeholders for each input type and meta task, 
             and for convenience, a list containing all placeholders created
         """
         obs_phs, action_phs, adv_phs, dist_info_phs, dist_info_phs_list = [], [], [], [], []
@@ -229,6 +229,7 @@ class MAMLAlgo(MetaAlgo):
         # prepare feed dict
         input_dict = self._extract_input_dict(samples, self._optimization_keys, prefix='adapt')
         input_ph_dict = self.adapt_input_ph_dict
+
         feed_dict_inputs = utils.create_feed_dict(placeholder_dict=input_ph_dict, value_dict=input_dict)
         feed_dict_params = self.policy.policies_params_feed_dict
 
@@ -272,7 +273,7 @@ class MAMLAlgo(MetaAlgo):
                         assert isinstance(d, np.ndarray)
                         input_dict['%s_task%i_%s/%s' % (prefix, meta_task, key, k)] = d
 
-                elif isinstance(data, np.ndarray) or isinstance(data, tf.Tensor):
+                elif isinstance(data, np.ndarray):
                     input_dict['%s_task%i_%s'%(prefix, meta_task, key)] = data
                 else:
                     raise NotImplementedError

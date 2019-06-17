@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 class DICEMAML(MAMLAlgo):
     """
-    Algorithm for First-Order + MAML + DICE
+    Algorithm for DICE VPG MAML
 
     Args:
         max_path_length (int): maximum path length
@@ -38,7 +38,7 @@ class DICEMAML(MAMLAlgo):
 
         self.build_graph()
 
-    def _adapt_objective_sym(self, action_stacked_sym, adj_reward_sym, mask_sym, dist_info_stacked_sym):
+    def _adapt_objective_sym(self, action_stacked_sym, adj_reward_sym, mask_sym, dist_info_stacked_sym): #TODO make this method private
         with tf.variable_scope("log_likelihood"):
             log_likelihood_adapt = self.policy.distribution.log_likelihood_sym(action_stacked_sym, dist_info_stacked_sym)
             log_likelihood_adapt = tf.reshape(log_likelihood_adapt, tf.shape(mask_sym))

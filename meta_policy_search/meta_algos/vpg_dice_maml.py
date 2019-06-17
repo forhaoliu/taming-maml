@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 class VPG_DICEMAML(DICEMAML):
     """
-    Algorithm for VPG + MAML + DICE
+    Algorithm for DICE VPG MAML
 
     Args:
         max_path_length (int): maximum path length

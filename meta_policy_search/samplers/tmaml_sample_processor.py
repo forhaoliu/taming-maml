@@ -107,7 +107,7 @@ class TMAMLMetaSampleProcessor(SampleProcessor):
             path["returns"] = utils.discount_cumsum(path["rewards"], self.discount)
         self.metabaseline.fit(paths, target_key="returns")
         for _, path in enumerate(paths):
-            path["meta_baselines"] = self.metabaseline.predict(path)
+            path["meta_baselines_nu"] = self.metabaseline.predict(path)
 
         # 3) fit baseline estimator using the path returns and predict the return baselines
         self.baseline.fit(paths, target_key='discounted_rewards')
@@ -122,6 +122,7 @@ class TMAMLMetaSampleProcessor(SampleProcessor):
         # 6) if desired normalize / shift adjusted_rewards
         if self.normalize_adv:
             adjusted_rewards = utils.normalize_advantages(adjusted_rewards)
+            meta_baselines = utils.normalize_metabaselines(meta_baselines)
         if self.positive_adv:
             adjusted_rewards = utils.shift_advantages_to_positive(adjusted_rewards)
 
@@ -191,7 +192,7 @@ class TMAMLMetaSampleProcessor(SampleProcessor):
             adjusted_rewards.append(self._pad(path["adjusted_rewards"], path_length))
             env_infos.append(dict([(key, self._pad(array, path_length)) for key, array in path["env_infos"].items()]))
             agent_infos.append((dict([(key, self._pad(array, path_length)) for key, array in path["agent_infos"].items()])))
-            meta_baselines.append(self._pad(path['meta_baselines'], path_length))
+            meta_baselines.append(self._pad(path['meta_baselines_nu'], path_length))
 
         # stack
         mask = np.stack(mask, axis=0) # shape: (batch_size, max_path_length)
